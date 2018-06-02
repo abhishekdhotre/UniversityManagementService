@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityManagementService.Contexts;
 
 namespace UniversityManagementService.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    partial class UniversityContextModelSnapshot : ModelSnapshot
+    [Migration("20180601222207_AddedSchoolIdProperty")]
+    partial class AddedSchoolIdProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +37,6 @@ namespace UniversityManagementService.Migrations
                     b.HasIndex("SchoolId");
 
                     b.ToTable("Departments");
-                });
-
-            modelBuilder.Entity("UniversityManagementService.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(500);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("UniversityManagementService.Models.School", b =>
@@ -92,25 +79,6 @@ namespace UniversityManagementService.Migrations
                     b.ToTable("Universities");
                 });
 
-            modelBuilder.Entity("UniversityManagementService.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(500);
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("UniversityManagementService.Models.Department", b =>
                 {
                     b.HasOne("UniversityManagementService.Models.School")
@@ -124,14 +92,6 @@ namespace UniversityManagementService.Migrations
                     b.HasOne("UniversityManagementService.Models.University")
                         .WithMany("Schools")
                         .HasForeignKey("UniversityId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("UniversityManagementService.Models.User", b =>
-                {
-                    b.HasOne("UniversityManagementService.Models.Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

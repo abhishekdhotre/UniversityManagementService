@@ -6,12 +6,12 @@ using UniversityManagementService.Models;
 
 namespace UniversityManagementService.Repository
 {
-    public interface IUniversityRepository
+    public interface IRoleRepository
     {
-        Task Add(University item);
-        Task<IEnumerable<University>> GetAll();
-        Task<University> Find(int key);
+        Task Add(Role item);
+        Task<IEnumerable<Role>> GetAll();
+        Task<Role> Find(int key);
         Task Remove(int Id);
-        Task Update(int id, University item);
+        Task Update(int id, Role item);
     }
 }

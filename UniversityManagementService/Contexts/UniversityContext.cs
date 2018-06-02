@@ -16,5 +16,7 @@ namespace UniversityManagementService.Contexts
         public DbSet<University> Universities { get; set; }
         public DbSet<School> Schools { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

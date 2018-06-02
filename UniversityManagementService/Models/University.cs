@@ -15,7 +15,7 @@ namespace UniversityManagementService.Models
         public string Name { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(1024)]
         public string Description { get; set; }
 
         public string ImagePath { get; set; }

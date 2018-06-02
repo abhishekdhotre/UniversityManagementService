@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityManagementService.Contexts;
 
 namespace UniversityManagementService.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    partial class UniversityContextModelSnapshot : ModelSnapshot
+    [Migration("20180602135841_AddUserRoleModel")]
+    partial class AddUserRoleModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,8 +131,8 @@ namespace UniversityManagementService.Migrations
 
             modelBuilder.Entity("UniversityManagementService.Models.User", b =>
                 {
-                    b.HasOne("UniversityManagementService.Models.Role")
-                        .WithMany("Users")
+                    b.HasOne("UniversityManagementService.Models.Role", "Role")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

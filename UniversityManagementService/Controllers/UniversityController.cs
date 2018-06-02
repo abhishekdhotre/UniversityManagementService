@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UniversityManagementService.Models;
 using UniversityManagementService.Repository;
 
 namespace UniversityManagementService.Controllers
 {
     [Produces("application/json")]
     [Route("api/University")]
+    [EnableCors("MyPolicy")]
     public class UniversityController : Controller
     {
         public IUniversityRepository UniversityRepository { get; set; }
@@ -38,23 +41,45 @@ namespace UniversityManagementService.Controllers
             }
             return Ok(item);
         }
-        
+
         // POST: api/University
+        [EnableCors("MyPolicy")]
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Create([FromBody] University item)
         {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            await UniversityRepository.Add(item);
+            return Created("api/University", item);
+            // return CreatedAtRoute("GetUniversity", new { Controller = "University", id = item.Id }, item);
         }
-        
+
         // PUT: api/University/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> Update(int id, [FromBody] University item)
         {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            var UniversityObj = await UniversityRepository.Find(id);
+            if (UniversityObj == null)
+            {
+                return NotFound();
+            }
+            await UniversityRepository.Update(id, item);
+            return NoContent();
         }
-        
+
+
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            await UniversityRepository.Remove(id);
+            return NoContent();
         }
     }
 }

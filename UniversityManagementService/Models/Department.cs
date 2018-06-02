@@ -14,5 +14,8 @@ namespace UniversityManagementService.Models
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
+
+        [Required]
+        public int SchoolId { get; set; }
     }
 }
