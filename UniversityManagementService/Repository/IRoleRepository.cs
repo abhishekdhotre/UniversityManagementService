@@ -16,6 +16,7 @@ namespace UniversityManagementService.Repository
         Task Update(int id, Role item);
         Task AddMapping(UniversityRole item);
         Task<UniversityRole> Find(int universityId, int roleId);
+        Task Remove(int universityId, int roleId);
         IEnumerable<UniversityRoleDto> GetMappings();
     }
 }

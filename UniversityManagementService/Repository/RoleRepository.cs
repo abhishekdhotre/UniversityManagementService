@@ -99,5 +99,24 @@ namespace UniversityManagementService.Repository
             await _context.UniversityRoles.AddAsync(item);
             await _context.SaveChangesAsync();
         }
+
+        public async Task Remove(int universityId, int roleId)
+        {
+            try
+            {
+                var itemToRemove = await _context.UniversityRoles
+                .Where(u => u.UniversityId.Equals(universityId))
+                .Where(r => r.RoleId.Equals(roleId))
+                .SingleOrDefaultAsync();
+
+                _context.UniversityRoles.Remove(itemToRemove);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

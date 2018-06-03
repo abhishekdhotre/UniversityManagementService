@@ -57,19 +57,15 @@ namespace UniversityManagementService.Controllers
                 return BadRequest();
             }
             await RoleRepository.AddMapping(item);
-            return Created("api/Role", item);
+            return Created("api/UniversityRole", item);
         }
 
-        // PUT: api/UniversityRole/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // DELETE: api/RoleUser/5
+        [HttpDelete("{universityId}/{roleId}")]
+        public async Task<IActionResult> Delete(int universityId, int roleId)
         {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            await RoleRepository.Remove(universityId, roleId);
+            return NoContent();
         }
     }
 }

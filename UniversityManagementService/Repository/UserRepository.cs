@@ -39,7 +39,7 @@ namespace UniversityManagementService.Repository
             from roleUser in _context.RoleUsers
             join roles in _context.Roles
             on roleUser.RoleId equals roles.Id
-            join users in _context.Roles
+            join users in _context.Users
             on roleUser.UserId equals users.Id
             select new { RoleName = roles.Name, UserName = users.Name };
             foreach (var ln in innerJoinQuery)
@@ -100,6 +100,25 @@ namespace UniversityManagementService.Repository
         {
             await _context.RoleUsers.AddAsync(item);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task Remove(int roleId, int userId)
+        {
+            try
+            {
+                var itemToRemove = await _context.RoleUsers
+                .Where(r => r.RoleId.Equals(roleId))
+                .Where(u => u.UserId.Equals(userId))
+                .SingleOrDefaultAsync();
+
+                _context.RoleUsers.Remove(itemToRemove);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
     }
 }
