@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UniversityManagementService.Contexts;
+using UniversityManagementService.Dto;
 using UniversityManagementService.Models;
 
 namespace UniversityManagementService.Repository
@@ -28,15 +29,41 @@ namespace UniversityManagementService.Repository
         {
             return await _context
                 .Roles
-                .Include(r => r.Users)
                 .ToListAsync();
+        }
+
+        public IEnumerable<UniversityRoleDto> GetMappings()
+        {
+            var universityRoleDtos = new List<UniversityRoleDto>();
+            var innerJoinQuery =
+            from universityRole in _context.UniversityRoles
+            join university in _context.Universities
+            on universityRole.UniversityId equals university.Id
+            join role in _context.Roles
+            on universityRole.RoleId equals role.Id
+            select new { UniversityName = university.Name, RoleName = role.Name };
+            foreach (var ln in innerJoinQuery)
+            {
+                UniversityRoleDto universityRoleDto = new UniversityRoleDto();
+                universityRoleDto.UniversityName = ln.UniversityName;
+                universityRoleDto.RoleName = ln.RoleName;
+                universityRoleDtos.Add(universityRoleDto);
+            }
+            return universityRoleDtos.AsEnumerable();
         }
 
         public async Task<Role> Find(int id)
         {
             return await _context.Roles
                 .Where(r => r.Id.Equals(id))
-                .Include(u => u.Users)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<UniversityRole> Find(int universityId, int roleId)
+        {
+            return await _context.UniversityRoles
+                .Where(u => u.UniversityId.Equals(universityId))
+                .Where(r => r.RoleId.Equals(roleId))
                 .SingleOrDefaultAsync();
         }
 
@@ -45,7 +72,6 @@ namespace UniversityManagementService.Repository
             try
             {
                 var itemToRemove = await _context.Roles
-                    .Include(u => u.Users)
                     .SingleOrDefaultAsync(r => r.Id == Id);
 
                 _context.Roles.Remove(itemToRemove);
@@ -58,9 +84,20 @@ namespace UniversityManagementService.Repository
 
         }
 
-        public Task Update(int id, Role item)
+        public async Task Update(int id, Role item)
         {
-            throw new NotImplementedException();
+            var itemToUpdate = await _context.Roles.SingleOrDefaultAsync(r => r.Id == item.Id);
+            if (itemToUpdate != null)
+            {
+                itemToUpdate.Name = item.Name;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddMapping(UniversityRole item)
+        {
+            await _context.UniversityRoles.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
     }
 }

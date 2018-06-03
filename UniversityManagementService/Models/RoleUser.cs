@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace UniversityManagementService.Models
 {
-    public class User
+    public class RoleUser
     {
-        public int Id { get; set; }
+        [Required]
+        [Key]
+        public int RoleId { get; set; }
 
         [Required]
-        [StringLength(500)]
-        public string Name { get; set; }
+        [Key]
+        public int UserId { get; set; }
     }
 }

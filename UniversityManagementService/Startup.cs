@@ -48,6 +48,7 @@ namespace UniversityManagementService
             services.AddScoped<IUniversityRepository, UniversityRepository>();
             services.AddScoped<ISchoolRepository, SchoolRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

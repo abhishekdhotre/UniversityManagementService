@@ -13,7 +13,5 @@ namespace UniversityManagementService.Models
         [Required]
         [StringLength(500)]
         public string Name { get; set; }
-
-        public List<User> Users { get; set; }
     }
 }

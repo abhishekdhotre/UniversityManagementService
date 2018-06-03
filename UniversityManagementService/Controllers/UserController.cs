@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UniversityManagementService.Models;
 using UniversityManagementService.Repository;
@@ -11,30 +7,30 @@ using UniversityManagementService.Repository;
 namespace UniversityManagementService.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Role")]
+    [Route("api/User")]
     [EnableCors("MyPolicy")]
-    public class RoleController : Controller
+    public class UserController : Controller
     {
-        public IRoleRepository RoleRepository { get; set; }
+        public IUserRepository UserRepository { get; set; }
 
-        public RoleController(IRoleRepository repository)
+        public UserController(IUserRepository repository)
         {
-            RoleRepository = repository;
+            UserRepository = repository;
         }
 
-        // GET: api/Role
-        [HttpGet]
+        // GET: api/User
+       [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var roleList = await RoleRepository.GetAll();
-            return Ok(roleList);
+            var userList = await UserRepository.GetAll();
+            return Ok(userList);
         }
 
-        // GET: api/Role/5
+        // GET: api/User/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await RoleRepository.Find(id);
+            var item = await UserRepository.Find(id);
             if (item == null)
             {
                 return NotFound();
@@ -42,33 +38,33 @@ namespace UniversityManagementService.Controllers
             return Ok(item);
         }
 
-        // POST: api/Role
+        // POST: api/User
         [EnableCors("MyPolicy")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Role item)
+        public async Task<IActionResult> Create([FromBody] User item)
         {
             if (item == null)
             {
                 return BadRequest();
             }
-            await RoleRepository.Add(item);
-            return Created("api/Role", item);
+            await UserRepository.Add(item);
+            return Created("api/User", item);
         }
 
-        // PUT: api/Role/5
+        // PUT: api/User/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Role item)
+        public async Task<IActionResult> Update(int id, [FromBody] User item)
         {
             if (item == null)
             {
                 return BadRequest();
             }
-            var roleObj = await RoleRepository.Find(id);
-            if (roleObj == null)
+            var userObj = await UserRepository.Find(id);
+            if (userObj == null)
             {
                 return NotFound();
             }
-            await RoleRepository.Update(id, item);
+            await UserRepository.Update(id, item);
             return NoContent();
         }
 
@@ -76,7 +72,7 @@ namespace UniversityManagementService.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await RoleRepository.Remove(id);
+            await UserRepository.Remove(id);
             return NoContent();
         }
     }
